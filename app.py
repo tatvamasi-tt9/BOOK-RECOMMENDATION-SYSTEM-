@@ -4,6 +4,8 @@ import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 import os
 
+st.write("📁 Files available in app:", os.listdir())
+
 st.set_page_config(layout="wide")
 # --- 1. Define all CSS styles ONCE at the top of the app ---
 st.markdown("""
