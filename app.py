@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
+import os
 
 st.set_page_config(layout="wide")
 # --- 1. Define all CSS styles ONCE at the top of the app ---
@@ -48,8 +49,18 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # --- Load data ONCE at the start ---
-data = np.load("embeddings_small.npz")
-embeddings = data["emb"].astype(np.float32)
+if os.path.exists("embeddings_small.npz"):
+    data = np.load("embeddings_small.npz")
+    embeddings = data["emb"].astype(np.float32)
+else:
+    st.warning("Upload embeddings_small.npz to run the recommender.")
+    uploaded_file = st.file_uploader("Upload embeddings_small.npz", type=["npz"])
+
+    if uploaded_file:
+        data = np.load(uploaded_file)
+        embeddings = data["emb"].astype(np.float32)
+    else:
+        st.stop()
 new_df = pd.read_csv('new_df.csv')
 book_list = new_df['title'].values
 
